@@ -4,7 +4,7 @@
 <div class="post-entry">
     {% for post in object_list %}
     <h2><a href="{% url 'post_detail' post.pk %}">{{post.title}}</a></h2>
-    <p>{{post.body}}</p>
+    <p><i class="fas fa-trash-alt"></i>{{post.body}}</p>
     {% endfor %}
 </div>
 {% endblock content %}
