@@ -1,10 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>List</h1>
-<div class="post-entry">
+<h1>工作清單</h1>
+
+<table class="table table-hover">
+  <thead class="bg-info text-light">
+    <tr>
+      <th scope="col">項目</th>
+      <th scope="col">案件</th>
+      <th scope="col">內文</th>
+    </tr>
+  </thead>
+  <tbody>
     {% for post in object_list %}
-    <h2><a href="{% url 'post_detail' post.pk %}">{{post.title}}</a></h2>
-    <p><i class="fas fa-trash-alt"></i>{{post.body}}</p>
+      <tr>
+        <th scope="row">
+          <a href="{% url 'post_delete' post.pk %}" class="btn btn-outline-danger btn-sm">
+            <i class="fas fa-trash-alt fa-lg"></i>
+          </a>
+        </th>
+        <td><a href="{% url 'post_detail' post.pk %}">{{post.title}}</a></td>
+        <td></i>{{post.body}}</td>
+      </tr>
     {% endfor %}
+  </tbody>
+</table>
+<div class="post-entry">
+    
 </div>
 {% endblock content %}
