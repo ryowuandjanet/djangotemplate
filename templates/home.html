@@ -1,30 +1,46 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>工作清單</h1>
+  <h1>工作清單</h1>
 
-<table class="table table-hover">
-  <thead class="bg-info text-light">
-    <tr>
-      <th scope="col">項目</th>
-      <th scope="col">案件</th>
-      <th scope="col">內文</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for post in object_list %}
+  <table class="table table-hover">
+    <thead class="bg-info text-light">
       <tr>
-        <th scope="row">
-          <a href="{% url 'post_delete' post.pk %}" class="btn btn-outline-danger btn-sm">
-            <i class="fas fa-trash-alt fa-lg"></i>
-          </a>
-        </th>
-        <td><a href="{% url 'post_detail' post.pk %}">{{post.title}}</a></td>
-        <td></i>{{post.body}}</td>
+        <th scope="col">項目</th>
+        <th scope="col">案件</th>
+        <th scope="col">內文</th>
       </tr>
-    {% endfor %}
-  </tbody>
-</table>
-<div class="post-entry">
-    
-</div>
+    </thead>
+    <tbody>
+      {% for post in object_list %}
+        <tr>
+          <th scope="row">
+
+            <a href="javascript:void(0)" onclick="post_modal_delete('{% url 'post:post_delete' post.id %}')" class="btn btn-outline-danger btn-sm delete-btn">
+              <i class="fas fa-trash-alt fa-lg"></i>
+            </a>
+            
+          </th>
+          <td><a href="{% url 'post:post_detail' post.pk %}">{{post.title}}</a></td>
+          <td></i>{{post.body}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="post-entry">
+      
+  </div>
+ 
+  <div class="modal fade" id="deleteModal" role="dialog"></div>
+
 {% endblock content %}
+
+{% block javascript %}
+  <script>
+    function post_modal_delete(url) {
+      $('#deleteModal').load(url,function() {
+        $(this).modal('show')
+      })
+    }
+  </script>
+{% endblock javascript %}
+

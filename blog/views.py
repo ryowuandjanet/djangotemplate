@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import ListView,DetailView
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy,reverse
 from .models import Post
 from .forms import BlogForm 
 
@@ -11,26 +11,32 @@ class BlogListView(ListView):
 
 class BlogDetailView(DetailView):
 	model=Post
+	form_class = BlogForm
 	template_name="post_detail.html"
+	success_url = reverse_lazy('post:post_detail')
 
 class BlogCreateView(CreateView):
 	model=Post
 	form_class = BlogForm
-	template_name="post_form.html"
-	success_url = reverse_lazy('home')
+	template_name="post_new.html"
+	success_url = reverse_lazy('post:home')
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['value'] = '建立'
 		context['title'] = '建立項目'
 		return context
+
 	# fields="__all__"
 
 class BlogUpdateView(UpdateView):
 	model=Post
-	context_object_name='Update'
 	form_class = BlogForm
-	# fields=['title','body']
-	template_name='post_form.html'
+	template_name='post_edit.html'
+	# success_url = reverse_lazy('post:home')
+
+	def get_success_url(self, **kwargs):
+		return reverse_lazy("post:post_detail", args=(self.object.id,))
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['value'] = '更新'
@@ -40,5 +46,5 @@ class BlogUpdateView(UpdateView):
 class BlogDeleteView(DeleteView):
 	model=Post
 	template_name="post_delete.html"
-	success_url=reverse_lazy('home')
+	success_url=reverse_lazy('post:home')
 

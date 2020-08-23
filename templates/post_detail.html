@@ -4,7 +4,35 @@
 <div class="post-entry">
     <h2>{{object.title}}</h2>
     <p>{{object.body}}</p>
+    <p>{{object.author}}</p>
+    <p>{{object.pubdate}}</p>
 </div>
-<a href="{% url 'post_edit' post.pk %}" class="btn btn-success btn-sm">+ Edit Blog Post</a>
-<a href="{% url 'post_delete' post.pk %}" class="btn btn-danger btn-sm">+ Delete Blog Post</a>
+<a href="{% url 'post:post_edit' post.pk %}" class="btn btn-success btn-sm">+ Edit Blog Post</a>
+<a href="javascript:void(0)" onclick="post_modal_edit('{% url 'post:post_edit' post.id %}')" class="btn btn-outline-info btn-sm">
+  <i class="fas fa-edit fa-lg"></i>
+</a>
+<a href="{% url 'post:post_delete' post.pk %}" class="btn btn-danger btn-sm">+ Delete Blog Post</a>
+<a href="javascript:void(0)" onclick="post_modal_delete('{% url 'post:post_delete' post.id %}')" class="btn btn-outline-danger btn-sm delete-btn">
+  <i class="fas fa-trash-alt fa-lg"></i>
+</a>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" role="dialog"></div>
+<div class="modal fade" id="deleteModal" role="dialog"></div>
+
 {% endblock content %}
+
+{{% block javascript %}
+  <script>
+    function post_modal_edit(url) {
+      $('#editModal').load(url,function() {
+        $(this).modal('show')
+      })
+    }
+    function post_modal_delete(url) {
+      $('#deleteModal').load(url,function() {
+        $(this).modal('show')
+      })
+    }
+  </script>
+{% endblock %}

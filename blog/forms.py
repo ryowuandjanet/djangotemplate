@@ -1,22 +1,18 @@
 from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
 from .models import *
 
 class BlogForm(forms.ModelForm):
-    class Meta:
-        model=Post
-        fields = '__all__' # list of fields you want from model
+  pubdate = forms.DateTimeField(
+    input_formats = ['%Y-%m-%dT%H:%M'],
+    widget = forms.DateTimeInput(
+      attrs={
+        'type': 'datetime-local',
+        'class': 'form-control'},
+      format='%Y-%m-%dT%H:%M')
+    )
+  class Meta:
+    model=Post
+    fields =['title','author','pubdate','body'] 
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.layout = Layout(
-            Row(
-                Column('title',css_class='form-group col-md-6 mb-0'),
-                Column('author', css_class='form-group col-md-6 mb-0'),
-                css_class='form-row'
-            ),
-            'body',
-            Submit('submit', '確認', css_class='form-group col-md-6 mb-0')
-        )
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
